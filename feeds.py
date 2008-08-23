@@ -25,7 +25,7 @@ class LatestEntries(EntriesFeed):
     description = 'New posts on ' + feed_title
 
     def items(self):
-        return Entry.objects.order_by('-pub_date')[:10]
+        return Entry.live.order_by('-pub_date')[:10]
 
 class LatestEntriesByTag(EntriesFeed):
     link = '/'
