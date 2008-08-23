@@ -7,6 +7,7 @@ from django.conf.urls.defaults import *
 from django.views.generic import date_based
 
 from blog_entries.models import Entry
+from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 
 
 entry_info_dict = {
@@ -16,6 +17,10 @@ entry_info_dict = {
 tagged_info_dict = {
     'queryset_or_model': Entry.live,
     'template_name': 'blog_entries/tagged.html',
+}
+feeds = {
+    'latest': LatestEntries,
+    'tag': LatestEntriesByTag,
 }
 
 urlpatterns = patterns('',
@@ -43,4 +48,8 @@ urlpatterns = patterns('',
                            'tagging.views.tagged_object_list',
                            tagged_info_dict,
                            name='blog_entries_tagged'),
+                        url(r'^feeds/(?P<url>.*)/$',
+                            'django.contrib.syndication.views.feed',
+                            {'feed_dict': feeds},
+                            name='blog_entries_feeds'),
                        )
