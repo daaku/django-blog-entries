@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.conf import settings
 from django.contrib.syndication.feeds import Feed
 from tagging.utils import parse_tag_input, get_tag
