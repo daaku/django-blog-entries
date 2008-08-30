@@ -90,9 +90,8 @@ class Entry(models.Model):
         return self._next_previous_helper('previous')
 
     def _get_comment_count(self):
-        model = settings.USE_FREE_COMMENTS and comment_models.FreeComment or comment_models.Comment
         ctype = ContentType.objects.get_for_model(self)
-        return model.objects.filter(content_type__pk=ctype.id, object_id__exact=self.id).count()
+        return comment_models.Comment.objects.filter(content_type__pk=ctype.id, object_pk__exact=self.id).count()
     _get_comment_count.short_description = 'Number of comments'
 
 
