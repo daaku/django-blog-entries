@@ -41,7 +41,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=250)
 
     # The actual entry bits.
-    body = models.TextField()
+    body = models.TextField(blank=True, null=True)
     excerpt = models.TextField(blank=True, null=True)
 
     # Managers.
