@@ -9,10 +9,11 @@ from blog_entries.models import Entry
 class EntryAdmin(admin.ModelAdmin):
     "Options for the Entry Admin interface."
 
+    change_form_template = 'blog_entries/change_form.html'
+
     class Media:
         js = (
                 'http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/container/container_core-min.js&2.5.2/build/menu/menu-min.js&2.5.2/build/element/element-beta-min.js&2.5.2/build/button/button-min.js&2.5.2/build/editor/editor-beta-min.js',
-                '/media/blog_entries/js/rte.js',
         )
         css = {
             'all': ('http://yui.yahooapis.com/2.5.2/build/assets/skins/sam/skin.css',)
