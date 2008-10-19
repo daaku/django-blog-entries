@@ -3,20 +3,30 @@ URLs for blog_entries.
 
 """
 
+import datetime
+
 from django.conf.urls.defaults import *
-from django.views.generic import date_based
+from django.views.generic import date_based, list_detail
 
 from blog_entries.models import Entry
 from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 
 
+PAGINATE_BY = 15
+
 entry_info_dict = {
     'queryset': Entry.live.all(),
     'date_field': 'pub_date',
+    'template_name': 'blog_entries/entry_list.html',
+}
+list_page_dict = {
+    'queryset': Entry.live.filter(pub_date__lte=datetime.datetime.now()).order_by('-pub_date'),
+    'paginate_by': PAGINATE_BY,
 }
 tagged_info_dict = {
     'queryset_or_model': Entry.live,
     'template_name': 'blog_entries/tagged.html',
+    'paginate_by': PAGINATE_BY,
 }
 feeds = {
     'latest': LatestEntries,
@@ -25,8 +35,8 @@ feeds = {
 
 urlpatterns = patterns('',
                        url(r'^$',
-                           date_based.archive_index,
-                           entry_info_dict,
+                           list_detail.object_list,
+                           list_page_dict,
                            name='blog_entries_archive_index'),
                        url(r'^(?P<year>\d{4})/$',
                            date_based.archive_year,
