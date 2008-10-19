@@ -13,10 +13,10 @@ class EntryAdmin(admin.ModelAdmin):
 
     class Media:
         js = (
-                'http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/container/container_core-min.js&2.5.2/build/menu/menu-min.js&2.5.2/build/element/element-beta-min.js&2.5.2/build/button/button-min.js&2.5.2/build/editor/editor-beta-min.js',
+            'http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/container/container_core-min.js&2.6.0/build/menu/menu-min.js&2.6.0/build/element/element-beta-min.js&2.6.0/build/button/button-min.js&2.6.0/build/editor/editor-min.js',
         )
         css = {
-            'all': ('http://yui.yahooapis.com/2.5.2/build/assets/skins/sam/skin.css',)
+            'all': ('http://yui.yahooapis.com/combo?2.6.0/build/assets/skins/sam/skin.css',)
         }
 
     prepopulated_fields = {
