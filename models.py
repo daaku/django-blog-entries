@@ -12,6 +12,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments import models as comment_models
+from django.utils.encoding import smart_unicode
 import tagging
 from tagging.fields import TagField
 
@@ -91,7 +92,9 @@ class Entry(models.Model):
 
     def _get_comment_count(self):
         ctype = ContentType.objects.get_for_model(self)
-        return comment_models.Comment.objects.filter(content_type__pk=ctype.id, object_pk__exact=self.id).count()
+        return comment_models.Comment.objects.filter(
+                content_type__pk=smart_unicode(ctype.id),
+                object_pk__exact=smart_unicode(self.id)).count()
     _get_comment_count.short_description = 'Number of comments'
 
 
