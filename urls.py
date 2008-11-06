@@ -3,8 +3,6 @@ URLs for blog_entries.
 
 """
 
-import datetime
-
 from django.conf.urls.defaults import *
 from django.views.generic import date_based, list_detail
 
@@ -15,12 +13,12 @@ from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 PAGINATE_BY = 15
 
 entry_info_dict = {
-    'queryset': Entry.live.all(),
+    'queryset': Entry.live,
     'date_field': 'pub_date',
     'template_name': 'blog_entries/entry_list.html',
 }
 list_page_dict = {
-    'queryset': Entry.live.filter(pub_date__lte=datetime.datetime.now()).order_by('-pub_date'),
+    'queryset': Entry.live.get_query_set(),
     'paginate_by': PAGINATE_BY,
 }
 tagged_info_dict = {

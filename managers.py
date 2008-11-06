@@ -2,6 +2,9 @@
 Managers for blog_entries.
 
 """
+
+import datetime
+
 from comment_utils.managers import CommentedObjectManager
 from django.db import models
 
@@ -25,7 +28,10 @@ class LiveEntryManager(CommentedObjectManager):
         with a status of 'live'.
 
         """
-        return super(LiveEntryManager, self).get_query_set().filter(status__exact=self.model.LIVE_STATUS)
+        return (super(LiveEntryManager, self).
+                get_query_set().
+                filter(status__exact=self.model.LIVE_STATUS).
+                order_by('-pub_date'))
 
     def latest_featured(self):
         """
