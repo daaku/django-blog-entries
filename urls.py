@@ -13,7 +13,7 @@ from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 PAGINATE_BY = 15
 
 entry_info_dict = {
-    'queryset': Entry.live,
+    'queryset': Entry,
     'date_field': 'pub_date',
     'template_name': 'blog_entries/entry_list.html',
 }
@@ -22,7 +22,7 @@ list_page_dict = {
     'paginate_by': PAGINATE_BY,
 }
 tagged_info_dict = {
-    'queryset_or_model': Entry.live,
+    'queryset_or_model': Entry,
     'template_name': 'blog_entries/tagged.html',
     'paginate_by': PAGINATE_BY,
 }

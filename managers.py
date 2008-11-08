@@ -31,6 +31,7 @@ class LiveEntryManager(CommentedObjectManager):
         return (super(LiveEntryManager, self).
                 get_query_set().
                 filter(status__exact=self.model.LIVE_STATUS).
+                filter(pub_date__lte=datetime.datetime.now).
                 order_by('-pub_date'))
 
     def latest_featured(self):

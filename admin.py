@@ -34,6 +34,7 @@ class EntryAdmin(admin.ModelAdmin):
     list_display = ('title', 'pub_date', 'author', 'status', 'enable_comments', '_get_comment_count')
     list_filter = ('status',)
     search_fields = ('excerpt', 'body', 'title')
+    model_admin_manager = Entry.unfiltered
 
 site = admin.site
 site.register(Entry, EntryAdmin)

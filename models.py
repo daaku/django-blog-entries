@@ -46,8 +46,8 @@ class Entry(models.Model):
     excerpt = models.TextField(blank=True, null=True)
 
     # Managers.
-    objects = models.Manager()
     live = managers.LiveEntryManager()
+    unfiltered = models.Manager()
 
     # Categorization and SEO.
     tags = TagField()
@@ -101,7 +101,7 @@ class Entry(models.Model):
 
 COMMENTS_MODERATE_AFTER = getattr(settings, 'COMMENTS_MODERATE_AFTER', None)
 class BlogEntriesModerator(CommentModerator):
-    akismet = True
+    akismet = not settings.DEBUG
     auto_close_field = 'pub_date'
     email_notification = True
     enable_field = 'enable_comments'
