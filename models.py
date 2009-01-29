@@ -15,6 +15,7 @@ from django.contrib.comments import models as comment_models
 from django.utils.encoding import smart_unicode
 import tagging
 from tagging.fields import TagField
+from template_utils.markup import formatter
 
 from blog_entries import managers
 
@@ -43,7 +44,9 @@ class Entry(models.Model):
 
     # The actual entry bits.
     body = models.TextField(blank=True, null=True)
+    body_html = models.TextField(editable=False, blank=True)
     excerpt = models.TextField(blank=True, null=True)
+    excerpt_html = models.TextField(blank=True, null=True, editable=False)
 
     # Managers.
     live = managers.LiveEntryManager()
@@ -60,6 +63,13 @@ class Entry(models.Model):
         get_latest_by = 'pub_date'
         ordering = ['-pub_date']
         verbose_name_plural = 'Entries'
+
+    def save(self):
+        if self.body:
+            self.body_html = formatter(self.body)
+        if self.excerpt:
+            self.excerpt_html = formatter(self.excerpt)
+        super(Entry, self).save()
 
     def __unicode__(self):
         return self.title
