@@ -18,7 +18,7 @@ entry_info_dict = {
     'template_name': 'blog_entries/entry_list.html',
 }
 list_page_dict = {
-    'queryset': Entry.live.get_query_set(),
+    'queryset': Entry.live.all(),
     'paginate_by': PAGINATE_BY,
 }
 tagged_info_dict = {
