@@ -3,21 +3,14 @@ Admin for blog_entries.
 
 """
 
+from django.conf import settings
 from django.contrib import admin
 from blog_entries.models import Entry
 
 class EntryAdmin(admin.ModelAdmin):
     "Options for the Entry Admin interface."
 
-    change_form_template = 'blog_entries/change_form.html'
-
-    class Media:
-        js = (
-            'http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/container/container_core-min.js&2.6.0/build/menu/menu-min.js&2.6.0/build/element/element-beta-min.js&2.6.0/build/button/button-min.js&2.6.0/build/editor/editor-min.js',
-        )
-        css = {
-            'all': ('http://yui.yahooapis.com/combo?2.6.0/build/assets/skins/sam/skin.css',)
-        }
+    change_form_template = 'blog_entries/change_form_' + getattr(settings, 'BLOG_ENTRIES_EDITOR', 'wmd') + '.html'
 
     prepopulated_fields = {
         'slug':        ('title',),
