@@ -18,7 +18,7 @@ class EntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'pub_date'
     fieldsets = (
         ('Metadata',
-            {'fields': ('title', 'slug', 'pub_date', 'author', 'status', 'featured', 'enable_comments')}),
+            {'fields': ('title', 'slug', 'pub_date', 'author', 'status', 'featured', 'enable_comments', 'sites', 'language')}),
         ('Entry',
             {'fields': ('excerpt', 'body')}),
         ('Categorization and SEO',

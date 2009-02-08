@@ -1,13 +1,13 @@
 # coding: utf-8
-from django.conf import settings
-from django.contrib.syndication.feeds import Feed
-from tagging.utils import parse_tag_input, get_tag
-from tagging.models import TaggedItem
 
 from blog_entries.models import Entry
+from django.conf import settings
+from django.contrib.syndication.feeds import Feed
+from tagging.models import TaggedItem
+from tagging.utils import parse_tag_input, get_tag
 
 
-feed_title = settings.BLOG_ENTRIES_FEED_TITLE or ''
+feed_title = getattr(settings, 'BLOG_ENTRIES_FEED_TITLE', '')
 
 class EntriesFeed(Feed):
     title_template = 'blog_entries/feeds_title.html'

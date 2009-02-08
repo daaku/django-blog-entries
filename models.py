@@ -3,21 +3,22 @@ Models for blog_entries.
 
 '''
 
-
-import datetime
-
+from blog_entries import managers
 from comment_utils.moderation import CommentModerator, moderator
 from django.conf import settings
-from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.comments import models as comment_models
+from django.contrib.sites.models import Site
+from django.db import models
 from django.utils.encoding import smart_unicode
-import tagging
+from django.utils.translation import ugettext_lazy as _
 from tagging.fields import TagField
 from template_utils.markup import formatter
+from translatable_model import LanguageField
+import datetime
+import tagging
 
-from blog_entries import managers
 
 class Entry(models.Model):
     'An entry in the weblog.'
@@ -26,21 +27,25 @@ class Entry(models.Model):
     DRAFT_STATUS = 2
     HIDDEN_STATUS = 3
     STATUS_CHOICES = (
-        (LIVE_STATUS, 'Live'),
-        (DRAFT_STATUS, 'Draft'),
-        (HIDDEN_STATUS, 'Hidden'),
+        (LIVE_STATUS, _(u'Live')),
+        (DRAFT_STATUS, _(u'Draft')),
+        (HIDDEN_STATUS, _(u'Hidden')),
     )
 
     # Metadata.
     author = models.ForeignKey(User)
     enable_comments = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
-    pub_date = models.DateTimeField(u'Date posted', default=datetime.datetime.today)
+    pub_date = models.DateTimeField(_(u'Date posted'), default=datetime.datetime.today,
+                                    help_text=_(u'Entries with a publication date in the future will not be visible.'))
     slug = models.SlugField(unique_for_date='pub_date',
-                            help_text=u'Used in the URL of the entry. Must be unique for the publication date of the entry.')
+                            help_text=_(u'Used in the URL of the entry. Must be unique for the publication date of the entry.'))
     status = models.IntegerField(choices=STATUS_CHOICES, default=LIVE_STATUS,
-                                 help_text=u'Only entries with "live" status will be displayed publicly.')
+                                 help_text=_(u'Only entries with "live" status will be displayed publicly.'))
     title = models.CharField(max_length=250)
+    language = LanguageField()
+    sites = models.ManyToManyField(Site, default=[settings.SITE_ID], verbose_name=_('sites'),
+                                    help_text=_('The site(s) the page is accessible at.'))
 
     # The actual entry bits.
     body = models.TextField(blank=True, null=True)
@@ -55,9 +60,9 @@ class Entry(models.Model):
     # Categorization and SEO.
     tags = TagField()
     keywords = models.TextField(blank=True, null=True,
-                                help_text=u'Comma separated keywords or phrases used for search engine optimization.')
+                                help_text=_(u'Comma separated keywords or phrases used for search engine optimization.'))
     description = models.TextField(blank=True, null=True,
-                                   help_text=u'Brief description used for search engine optimization.')
+                                   help_text=_(u'Brief description used for search engine optimization.'))
 
     class Meta:
         get_latest_by = 'pub_date'
@@ -102,10 +107,10 @@ class Entry(models.Model):
 
     def _get_comment_count(self):
         ctype = ContentType.objects.get_for_model(self)
-        return comment_models.Comment.objects.filter(
+        return Comment.objects.filter(
                 content_type__pk=smart_unicode(ctype.id),
                 object_pk__exact=smart_unicode(self.id)).count()
-    _get_comment_count.short_description = 'Number of comments'
+    _get_comment_count.short_description = _(u'Number of comments')
 
 
 

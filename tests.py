@@ -1,10 +1,11 @@
+from blog_entries.models import Entry
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.comments.models import Comment
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
-from blog_entries.models import Entry
+
 
 c = Client()
 

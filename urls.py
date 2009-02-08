@@ -3,11 +3,10 @@ URLs for blog_entries.
 
 """
 
+from blog_entries.feeds import LatestEntries, LatestEntriesByTag
+from blog_entries.models import Entry
 from django.conf.urls.defaults import *
 from django.views.generic import date_based, list_detail
-
-from blog_entries.models import Entry
-from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 
 
 PAGINATE_BY = 15
@@ -18,7 +17,7 @@ entry_info_dict = {
     'template_name': 'blog_entries/entry_list.html',
 }
 list_page_dict = {
-    'queryset': Entry.live.all(),
+    'queryset': Entry.live,
     'paginate_by': PAGINATE_BY,
 }
 tagged_info_dict = {
@@ -50,7 +49,7 @@ urlpatterns = patterns('',
                            name='blog_entries_archive_day'),
                        url(r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{2})/(?P<slug>[-\w]+)/$',
                            date_based.object_detail,
-                           {'queryset': Entry.live.all(), 'date_field': 'pub_date', 'slug_field': 'slug'},
+                           {'queryset': Entry.live, 'date_field': 'pub_date', 'slug_field': 'slug'},
                            name='blog_entries_detail'),
                        url(r'^tag/(?P<tag>.*)/$',
                            'tagging.views.tagged_object_list',
