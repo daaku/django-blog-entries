@@ -5,11 +5,12 @@ URLs for blog_entries.
 
 from blog_entries.feeds import LatestEntries, LatestEntriesByTag
 from blog_entries.models import Entry
+from django.conf import settings
 from django.conf.urls.defaults import *
 from django.views.generic import date_based, list_detail
 
 
-PAGINATE_BY = 15
+PAGINATE_BY = getattr(settings, 'BLOG_ENTRIES_PAGINATE_BY', 15)
 
 entry_info_dict = {
     'queryset': Entry,
