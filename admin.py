@@ -3,17 +3,17 @@ Admin for blog_entries.
 
 """
 
+from blog_entries.models import Entry
 from django.conf import settings
 from django.contrib import admin
-from blog_entries.models import Entry
+from django.core.urlresolvers import get_callable
+
 
 class EntryAdmin(admin.ModelAdmin):
     "Options for the Entry Admin interface."
 
-    change_form_template = 'blog_entries/change_form_' + getattr(settings, 'BLOG_ENTRIES_EDITOR', 'wmd') + '.html'
-
     prepopulated_fields = {
-        'slug':        ('title',),
+        'slug': ('title',),
     }
     date_hierarchy = 'pub_date'
     fieldsets = (
@@ -28,6 +28,15 @@ class EntryAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     search_fields = ('excerpt', 'body', 'title')
     model_admin_manager = Entry.unfiltered
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'body' or db_field.name == 'excerpt':
+            setting_name = 'BLOG_ENTRIES_%s_WIDGET' % db_field.name.upper()
+            widget = getattr(settings, setting_name, None)
+            if widget:
+                c, k = widget
+                kwargs['widget'] = get_callable(c)(**k)
+        return super(EntryAdmin, self).formfield_for_dbfield(db_field, **kwargs)
 
 site = admin.site
 site.register(Entry, EntryAdmin)

@@ -114,14 +114,14 @@ class Entry(models.Model):
 
 
 
-COMMENTS_MODERATE_AFTER = getattr(settings, 'COMMENTS_MODERATE_AFTER', None)
+BLOG_ENTRIES_COMMENTS_MODERATE_AFTER = getattr(settings, 'BLOG_ENTRIES_COMMENTS_MODERATE_AFTER', None)
 class BlogEntriesModerator(CommentModerator):
     akismet = not settings.DEBUG
     auto_close_field = 'pub_date'
     email_notification = True
     enable_field = 'enable_comments'
-    if COMMENTS_MODERATE_AFTER:
-        close_after = COMMENTS_MODERATE_AFTER
+    if BLOG_ENTRIES_COMMENTS_MODERATE_AFTER:
+        close_after = BLOG_ENTRIES_COMMENTS_MODERATE_AFTER
 
 moderator.register([Entry], BlogEntriesModerator)
 
