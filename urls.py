@@ -13,7 +13,7 @@ from django.views.generic import date_based, list_detail
 PAGINATE_BY = getattr(settings, 'BLOG_ENTRIES_PAGINATE_BY', 15)
 
 entry_info_dict = {
-    'queryset': Entry,
+    'queryset': Entry.live,
     'date_field': 'pub_date',
     'template_name': 'blog_entries/entry_list.html',
 }
