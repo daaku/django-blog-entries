@@ -54,3 +54,11 @@ def do_featured_entry(parser, token):
 
 register.tag('get_featured_entries', do_featured_entries)
 register.tag('get_featured_entry', do_featured_entry)
+
+@register.inclusion_tag('blog_entries/month_links_snippet.html')
+def render_month_links():
+    from blog_entries.models import Entry
+    return {
+       'dates': Entry.live.dates('pub_date', 'month'),
+    }
+
